@@ -33,9 +33,8 @@ HOMEPAGE="http://kodi.tv/ http://kodi.wiki/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="airplay alsa avahi bluetooth bluray caps cec css debug +fishbmc gles goom java joystick midi mysql nfs +opengl profile +projectm pulseaudio +rsxs raspberry-pi rtmp +samba sftp test udisks upnp upower +usb vaapi vdpau webserver +X +xrandr"
+IUSE="airplay alsa avahi bluetooth bluray caps cec css debug gles goom java joystick midi mysql nfs +opengl profile pulseaudio raspberry-pi rtmp +samba sftp test udisks upnp upower +usb vaapi vdpau webserver +X +xrandr"
 REQUIRED_USE="
-	rsxs? ( X )
 	xrandr? ( X )
 "
 
@@ -73,7 +72,6 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	media-libs/libmpeg2
 	media-libs/libogg
 	media-libs/libpng
-	projectm? ( media-libs/libprojectm )
 	media-libs/libsamplerate
 	joystick? ( media-libs/libsdl2 )
 	>=media-libs/taglib-1.8
@@ -200,6 +198,9 @@ src_configure() {
 		--docdir=/usr/share/doc/${PF} \
 		--disable-ccache \
 		--disable-optimizations \
+		--disable-rsxs \
+		--disable-fishbmc \
+		--disable-projectm \
 		--with-ffmpeg=shared \
 		$(use_enable alsa) \
 		$(use_enable airplay) \
@@ -209,7 +210,6 @@ src_configure() {
 		$(use_enable cec libcec) \
 		$(use_enable css dvdcss) \
 		$(use_enable debug) \
-		$(use_enable fishbmc) \
 		$(use_enable gles) \
 		$(use_enable goom) \
 		$(use_enable joystick) \
@@ -218,9 +218,7 @@ src_configure() {
 		$(use_enable nfs) \
 		$(use_enable opengl gl) \
 		$(use_enable profile profiling) \
-		$(use_enable projectm) \
 		$(use_enable pulseaudio pulse) \
-		$(use_enable rsxs) \
 		$(use_enable rtmp) \
 		$(use_enable samba) \
 		$(use_enable sftp ssh) \
@@ -248,11 +246,10 @@ src_install() {
 	# Remove optional addons (platform specific and disabled by USE flag).
 	local disabled_addons=(
 		repository.pvr-{android,ios,osx{32,64},win32}.xbmc.org
-		visualization.dxspectrum
+		visualization.{dxspectrum,fishbmc,milkdrop,projectm,waveform,glspectrum}
+		screensaver.rsxs.{euphoria,plasma,solarwinds}
 	)
-	use fishbmc  || disabled_addons+=( visualization.fishbmc )
-	use projectm || disabled_addons+=( visualization.{milkdrop,projectm} )
-	use rsxs     || disabled_addons+=( screensaver.rsxs.{euphoria,plasma,solarwinds} )
+
 	rm -rf "${disabled_addons[@]/#/${ED}/usr/share/kodi/addons/}"
 
 	# Remove fonconfig settings that are used only on MacOSX.
