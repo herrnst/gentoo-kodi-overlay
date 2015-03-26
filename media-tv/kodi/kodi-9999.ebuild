@@ -159,6 +159,10 @@ src_prepare() {
 	multijob_finish
 	elibtoolize
 
+	# since templates are subject to be patched, do patching before
+	# doing codegen
+	epatch_user #293109
+
 	[[ ${PV} == "9999" ]] && emake -f codegenerator.mk
 
 	# Disable internal func checks as our USE/DEPEND
@@ -178,8 +182,6 @@ src_prepare() {
 	sed -i \
 		-e '/dbus_connection_send_with_reply_and_block/s:-1:3000:' \
 		xbmc/linux/*.cpp || die
-
-	epatch_user #293109
 
 	# Tweak autotool timestamps to avoid regeneration
 	find . -type f -exec touch -r configure {} +
