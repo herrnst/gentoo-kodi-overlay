@@ -86,7 +86,7 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	rtmp? ( media-video/rtmpdump )
 	avahi? ( net-dns/avahi )
 	nfs? ( net-fs/libnfs )
-	webserver? ( net-libs/libmicrohttpd[messages] )
+	net-libs/libmicrohttpd[messages]
 	sftp? ( net-libs/libssh[sftp] )
 	net-misc/curl
 	samba? ( >=net-fs/samba-3.4.6[smbclient(+)] )
@@ -120,11 +120,13 @@ COMMON_DEPEND="${PYTHON_DEPS}
 RDEPEND="${COMMON_DEPEND}
 	!media-tv/xbmc
 	udisks? ( sys-fs/udisks:0 )
-	upower? ( || ( sys-power/upower sys-power/upower-pm-utils ) )"
+	upower? ( || ( sys-power/upower sys-power/upower-pm-utils ) )
+	webserver? ( net-libs/libmicrohttpd[messages] )"
 DEPEND="${COMMON_DEPEND}
 	app-arch/xz-utils
 	dev-lang/swig
 	dev-util/gperf
+	net-libs/libmicrohttpd[messages]
 	X? ( x11-proto/xineramaproto )
 	dev-util/cmake
 	x86? ( dev-lang/nasm )
