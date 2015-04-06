@@ -36,7 +36,7 @@ HOMEPAGE="http://kodi.tv/ http://kodi.wiki/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="airplay alsa avahi bluetooth bluray caps cec css debug gles goom java joystick midi mysql nfs +opengl profile pulseaudio raspberry-pi rtmp +samba sftp test udisks upnp upower +usb vaapi vdpau webserver +X +xrandr"
+IUSE="airplay alsa avahi bluetooth bluray caps cec css debug gles goom java joystick midi mysql nfs +opengl profile pulseaudio rtmp +samba sftp test +texturepacker udisks upnp upower +usb vaapi vdpau webserver +X +xrandr"
 REQUIRED_USE="
 	xrandr? ( X )
 "
@@ -127,6 +127,10 @@ DEPEND="${COMMON_DEPEND}
 	dev-lang/swig
 	dev-util/gperf
 	net-libs/libmicrohttpd[messages]
+	texturepacker? (
+		media-libs/libsdl
+		media-libs/sdl-image
+	)
 	X? ( x11-proto/xineramaproto )
 	dev-util/cmake
 	x86? ( dev-lang/nasm )
@@ -199,14 +203,7 @@ src_configure() {
 	# Requiring java is asine #434662
 	[[ ${PV} != "9999" ]] && export ac_cv_path_JAVA_EXE=$(which $(usex java java true))
 
-	local myconf=""
-	if use raspberry-pi; then
-		myconf="--with-platform=raspberry-pi"
-		myconf="$myconf --enable-player=omxplayer"
-	fi
-
 	econf \
-		$myconf \
 		--docdir=/usr/share/doc/${PF} \
 		--disable-ccache \
 		--disable-optimizations \
