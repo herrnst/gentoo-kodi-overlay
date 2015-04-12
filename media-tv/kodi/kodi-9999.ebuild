@@ -9,7 +9,7 @@ EAPI="5"
 
 # Does not work with py3 here
 # It might work with py:2.5 but I didn't test that
-PYTHON_COMPAT=( python{2_6,2_7} )
+PYTHON_COMPAT=( python2_7 )
 PYTHON_REQ_USE="sqlite"
 
 inherit eutils python-single-r1 multiprocessing autotools
@@ -127,10 +127,6 @@ DEPEND="${COMMON_DEPEND}
 	dev-lang/swig
 	dev-util/gperf
 	net-libs/libmicrohttpd[messages]
-	texturepacker? (
-		media-libs/libsdl
-		media-libs/sdl-image
-	)
 	X? ( x11-proto/xineramaproto )
 	dev-util/cmake
 	x86? ( dev-lang/nasm )
@@ -233,6 +229,7 @@ src_configure() {
 		$(use_enable sftp ssh) \
 		$(use_enable usb libusb) \
 		$(use_enable test gtest) \
+		$(use_enable texturepacker) \
 		$(use_enable upnp) \
 		$(use_enable vaapi) \
 		$(use_enable vdpau) \
