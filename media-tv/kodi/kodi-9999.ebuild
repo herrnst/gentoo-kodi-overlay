@@ -175,11 +175,6 @@ src_prepare() {
 	# instead of the SVN revision number.
 	export HAVE_GIT=no GIT_REV=${EGIT_VERSION:-exported}
 
-	# Fix hardcoded lib dir in addon-helpers.cmake
-	sed -i \
-		-e "s:lib/kodi/addons/:$(get_libdir)/kodi/addons/:" \
-		project/cmake/scripts/common/addon-helpers.cmake || die
-
 	# avoid long delays when powerkit isn't running #348580
 	sed -i \
 		-e '/dbus_connection_send_with_reply_and_block/s:-1:3000:' \
