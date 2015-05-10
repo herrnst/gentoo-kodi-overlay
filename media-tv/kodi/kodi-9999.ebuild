@@ -51,11 +51,12 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	dev-libs/expat
 	dev-libs/fribidi
 	dev-libs/libcdio[-minimal]
-	cec? ( >=dev-libs/libcec-2.2 )
+	cec? ( >=dev-libs/libcec-3.0 )
 	dev-libs/libpcre[cxx]
 	dev-libs/libxml2
 	dev-libs/libxslt
 	>=dev-libs/lzo-2.04
+	dev-libs/platform
 	dev-libs/tinyxml[stl]
 	dev-libs/yajl
 	dev-python/simplejson[${PYTHON_USEDEP}]
