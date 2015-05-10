@@ -20,6 +20,7 @@ IUSE=""
 
 DEPEND="
 	media-tv/kodi
+	dev-libs/platform
 	dev-libs/tinyxml
 	"
 
