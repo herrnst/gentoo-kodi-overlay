@@ -148,7 +148,6 @@ src_unpack() {
 src_prepare() {
 	epatch "${FILESDIR}"/${P}-no-arm-flags.patch #400617
 	epatch "${FILESDIR}"/${P}-texturepacker.patch
-	epatch "${FILESDIR}"/${P}-pr7116-kissfft.patch #https://github.com/xbmc/xbmc/pull/7116
 
 	# some dirs ship generated autotools, some dont
 	multijob_init
