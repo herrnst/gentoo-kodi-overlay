@@ -25,7 +25,7 @@ DEPEND="
 	"
 
 RDEPEND="
-	dev-libs/platform
+	dev-libs/libplatform
 	media-libs/kodiplatform
 	sys-libs/zlib
 	"

@@ -56,7 +56,7 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	dev-libs/libxml2
 	dev-libs/libxslt
 	>=dev-libs/lzo-2.04
-	dev-libs/platform
+	dev-libs/libplatform
 	dev-libs/tinyxml[stl]
 	dev-libs/yajl
 	dev-python/simplejson[${PYTHON_USEDEP}]
