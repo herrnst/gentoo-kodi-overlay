@@ -256,8 +256,6 @@ src_install() {
 	# Remove optional addons (platform specific and disabled by USE flag).
 	local disabled_addons=(
 		repository.pvr-{android,ios,osx{32,64},win32}.xbmc.org
-		visualization.{dxspectrum,fishbmc,milkdrop,projectm,waveform,glspectrum,vortex}
-		screensaver.rsxs.{euphoria,plasma,solarwinds}
 	)
 
 	rm -rf "${disabled_addons[@]/#/${ED}/usr/share/kodi/addons/}"
