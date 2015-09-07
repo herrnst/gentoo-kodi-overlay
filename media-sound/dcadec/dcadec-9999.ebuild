@@ -21,7 +21,11 @@ DEPEND="virtual/pkgconfig"
 RDEPEND="${DEPEND}
 	tools? ( !media-libs/libdca )"
 
+src_compile() {
+	emake CC="$(tc-getCC)" || die "emake failed"
+}
+
 src_install() {
 	base_src_install PREFIX="${EPREFIX}/usr"
-	use tools || rm ${D}/usr/bin/dcadec
+	use tools || ( rm ${D}/usr/bin/dcadec ; rmdir ${D}/usr/bin )
 }
