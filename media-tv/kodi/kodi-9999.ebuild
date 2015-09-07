@@ -1,7 +1,7 @@
 # Copyright 2015 Daniel 'herrnst' Scheller, Team Kodi
 # Original copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 # Imported from official Gentoo portage tree
 
@@ -12,9 +12,9 @@ EAPI="5"
 PYTHON_COMPAT=( python2_7 )
 PYTHON_REQ_USE="sqlite"
 
-inherit eutils python-single-r1 multiprocessing autotools
+inherit eutils linux-info python-single-r1 multiprocessing autotools
 
-CODENAME="Helix"
+CODENAME="Isengard"
 case ${PV} in
 9999)
 	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
@@ -24,7 +24,8 @@ case ${PV} in
 	MY_PV=${PV/_p/_r}
 	MY_P="${PN}-${MY_PV}"
 	SRC_URI="http://mirrors.kodi.tv/releases/source/${MY_PV}-${CODENAME}.tar.gz -> ${P}.tar.gz
-		http://mirrors.kodi.tv/releases/source/${MY_P}-generated-addons.tar.xz"
+		https://github.com/xbmc/xbmc/archive/${PV}-${CODENAME}.tar.gz -> ${P}.tar.gz
+		!java? ( http://mirrors.kodi.tv/releases/source/${MY_P}-generated-addons.tar.xz )"
 	KEYWORDS="~amd64 ~x86"
 
 	S=${WORKDIR}/xbmc-${PV}-${CODENAME}
@@ -36,9 +37,10 @@ HOMEPAGE="http://kodi.tv/ http://kodi.wiki/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="airplay alsa avahi bluetooth bluray caps cec css debug gles goom java joystick midi mysql nfs +opengl profile pulseaudio rtmp +samba sftp test +texturepacker udisks upnp upower +usb vaapi vdpau webserver +X +xrandr"
+IUSE="airplay alsa avahi bluetooth bluray caps cec css dbus debug gles java joystick midi mysql nfs +opengl profile pulseaudio rtmp +samba sftp test +texturepacker udisks upnp upower +usb vaapi vdpau webserver +X"
 REQUIRED_USE="
-	xrandr? ( X )
+	udisks? ( dbus )
+	upower? ( dbus )
 "
 
 COMMON_DEPEND="${PYTHON_DEPS}
@@ -87,12 +89,12 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	rtmp? ( media-video/rtmpdump )
 	avahi? ( net-dns/avahi )
 	nfs? ( net-fs/libnfs )
-	net-libs/libmicrohttpd[messages]
+	webserver? ( net-libs/libmicrohttpd[messages] )
 	sftp? ( net-libs/libssh[sftp] )
 	net-misc/curl
 	samba? ( >=net-fs/samba-3.4.6[smbclient(+)] )
 	bluetooth? ( net-wireless/bluez )
-	sys-apps/dbus
+	dbus? ( sys-apps/dbus )
 	caps? ( sys-libs/libcap )
 	sys-libs/zlib
 	virtual/jpeg
@@ -108,26 +110,26 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	)
 	vaapi? ( x11-libs/libva[opengl] )
 	vdpau? (
-		|| ( x11-libs/libvdpau >=x11-drivers/nvidia-drivers-180.51 )
+		|| ( >=x11-libs/libvdpau-1.1 >=x11-drivers/nvidia-drivers-180.51 )
 		media-video/ffmpeg[vdpau]
 	)
 	X? (
 		x11-apps/xdpyinfo
 		x11-apps/mesa-progs
 		x11-libs/libXinerama
-		xrandr? ( x11-libs/libXrandr )
+		x11-libs/libXrandr
 		x11-libs/libXrender
 	)"
 RDEPEND="${COMMON_DEPEND}
 	!media-tv/xbmc
 	udisks? ( sys-fs/udisks:0 )
-	upower? ( || ( sys-power/upower sys-power/upower-pm-utils ) )
-	webserver? ( net-libs/libmicrohttpd[messages] )"
+	upower? ( || ( sys-power/upower sys-power/upower-pm-utils ) )"
 DEPEND="${COMMON_DEPEND}
 	app-arch/xz-utils
 	dev-lang/swig
+	dev-libs/crossguid
 	dev-util/gperf
-	net-libs/libmicrohttpd[messages]
+	media-sound/dcadec
 	X? ( x11-proto/xineramaproto )
 	dev-util/cmake
 	x86? ( dev-lang/nasm )
@@ -137,7 +139,14 @@ DEPEND="${COMMON_DEPEND}
 # generated addons package.  #488118
 [[ ${PV} == "9999" ]] && DEPEND+=" virtual/jre"
 
+CONFIG_CHECK="~IP_MULTICAST"
+ERROR_IP_MULTICAST="
+In some cases Kodi needs to access multicast addresses.
+Please consider enabling IP_MULTICAST under Networking options.
+"
+
 pkg_setup() {
+	check_extra_config
 	python-single-r1_pkg_setup
 }
 
@@ -146,13 +155,16 @@ src_unpack() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}"/${P}-no-arm-flags.patch #400617
-	epatch "${FILESDIR}"/${P}-texturepacker.patch
+	epatch "${FILESDIR}"/${PN}-9999-no-arm-flags.patch #400617
+	epatch "${FILESDIR}"/${PN}-9999-texturepacker.patch
 
 	# some dirs ship generated autotools, some dont
 	multijob_init
-	local d
-	for d in $(printf 'f:\n\t@echo $(BOOTSTRAP_TARGETS)\ninclude bootstrap.mk\n' | emake -f - f) ; do
+	local d dirs=(
+		tools/depends/native/TexturePacker/src/configure
+		$(printf 'f:\n\t@echo $(BOOTSTRAP_TARGETS)\ninclude bootstrap.mk\n' | emake -f - f)
+	)
+	for d in "${dirs[@]}" ; do
 		[[ -e ${d} ]] && continue
 		pushd ${d/%configure/.} >/dev/null || die
 		AT_NOELIBTOOLIZE="yes" AT_TOPLEVEL_EAUTORECONF="yes" \
@@ -199,9 +211,6 @@ src_configure() {
 		--docdir=/usr/share/doc/${PF} \
 		--disable-ccache \
 		--disable-optimizations \
-		--disable-rsxs \
-		--disable-fishbmc \
-		--disable-projectm \
 		--with-ffmpeg=shared \
 		$(use_enable alsa) \
 		$(use_enable airplay) \
@@ -210,9 +219,9 @@ src_configure() {
 		$(use_enable caps libcap) \
 		$(use_enable cec libcec) \
 		$(use_enable css dvdcss) \
+		$(use_enable dbus) \
 		$(use_enable debug) \
 		$(use_enable gles) \
-		$(use_enable goom) \
 		$(use_enable joystick) \
 		$(use_enable midi mid) \
 		$(use_enable mysql) \
@@ -230,8 +239,7 @@ src_configure() {
 		$(use_enable vaapi) \
 		$(use_enable vdpau) \
 		$(use_enable webserver) \
-		$(use_enable X x11) \
-		$(use_enable xrandr)
+		$(use_enable X x11)
 }
 
 src_compile() {
@@ -248,7 +256,7 @@ src_install() {
 	# Remove optional addons (platform specific and disabled by USE flag).
 	local disabled_addons=(
 		repository.pvr-{android,ios,osx{32,64},win32}.xbmc.org
-		visualization.{dxspectrum,fishbmc,milkdrop,projectm,waveform,glspectrum}
+		visualization.{dxspectrum,fishbmc,milkdrop,projectm,waveform,glspectrum,vortex}
 		screensaver.rsxs.{euphoria,plasma,solarwinds}
 	)
 
