@@ -7,7 +7,7 @@ EAPI=5
 EGIT_REPO_URI="https://github.com/kodi-pvr/pvr.mythtv.git"
 EGIT_BRANCH="master"
 
-inherit git-r3 cmake-utils
+inherit git-r3 cmake-utils kodi-addon
 
 DESCRIPTION="MythTV PVR for Kodi"
 HOMEPAGE="http://kodi.tv"

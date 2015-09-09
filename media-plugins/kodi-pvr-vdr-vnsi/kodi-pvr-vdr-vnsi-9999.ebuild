@@ -7,7 +7,7 @@ EAPI=5
 EGIT_REPO_URI="https://github.com/kodi-pvr/pvr.vdr.vnsi.git"
 EGIT_BRANCH="master"
 
-inherit git-r3 cmake-utils
+inherit git-r3 cmake-utils kodi-addon
 
 DESCRIPTION="Kodi PVR addon VNSI"
 HOMEPAGE="http://kodi.tv"

@@ -7,7 +7,7 @@ EAPI=5
 EGIT_REPO_URI="https://github.com/notspiff/screensavers.rsxs.git"
 EGIT_BRANCH="master"
 
-inherit git-r3 cmake-utils
+inherit git-r3 cmake-utils kodi-addon
 
 DESCRIPTION="RSXS screensaver add-ons for Kodi"
 HOMEPAGE="http://kodi.tv"

@@ -7,7 +7,7 @@ EAPI=5
 EGIT_REPO_URI="https://github.com/kodi-pvr/pvr.nextpvr.git"
 EGIT_BRANCH="master"
 
-inherit git-r3 cmake-utils
+inherit git-r3 cmake-utils kodi-addon
 
 DESCRIPTION="Kodi's NextPVR client addon"
 HOMEPAGE="http://kodi.tv"
