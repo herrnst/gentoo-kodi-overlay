@@ -5,22 +5,24 @@
 EAPI=5
 PYTHON_COMPAT=( python2_7 python3_4 )
 
-inherit cmake-utils eutils linux-info python-single-r1
+inherit cmake-utils eutils git-r3 linux-info python-single-r1
 
 DESCRIPTION="Library for communicating with the Pulse-Eight USB HDMI-CEC Adaptor"
 HOMEPAGE="http://libcec.pulse-eight.com"
-SRC_URI="https://github.com/Pulse-Eight/${PN}/archive/${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~arm ~amd64 ~x86"
+
+EGIT_REPO_URI="https://github.com/Pulse-Eight/libcec.git"
+EGIT_BRANCH="master"
 
 IUSE="cubox exynos python raspberry-pi +xrandr"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
 RDEPEND="virtual/udev
 	dev-libs/lockdev
-	<=dev-libs/libplatform-1.0.10
-	!dev-libs/libp8-platform
+	!dev-libs/libplatform
+	dev-libs/libp8-platform
 	xrandr? ( x11-libs/libXrandr )"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
@@ -31,9 +33,7 @@ DEPEND="${RDEPEND}
 
 CONFIG_CHECK="~USB_ACM"
 
-S="${WORKDIR}/${PN}-${P}"
-
-PATCHES=( "${FILESDIR}"/${P}-envcheck.patch )
+S="${WORKDIR}/${P}"
 
 pkg_setup() {
 	use python && python-single-r1_pkg_setup
