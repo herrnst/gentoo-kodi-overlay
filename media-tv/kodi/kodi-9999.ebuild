@@ -36,7 +36,7 @@ HOMEPAGE="https://kodi.tv/ http://kodi.wiki/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="airplay alsa avahi bluetooth bluray caps cec dbus debug gles java joystick midi mysql nfs +opengl profile pulseaudio rtmp +samba sftp +system-ffmpeg test +texturepacker udisks upnp upower +usb vaapi vdpau webserver +X"
+IUSE="airplay alsa avahi bluetooth bluray caps cec dbus debug gles java midi mysql nfs +opengl profile pulseaudio rtmp +samba sftp +system-ffmpeg test +texturepacker udisks upnp upower +usb vaapi vdpau webserver +X"
 # gles/vaapi: http://trac.kodi.tv/ticket/10552 #464306
 REQUIRED_USE="
 	|| ( gles opengl )
@@ -77,7 +77,6 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	media-libs/libogg
 	media-libs/libpng:0=
 	media-libs/libsamplerate
-	joystick? ( media-libs/libsdl2 )
 	>=media-libs/taglib-1.8
 	media-libs/libvorbis
 	media-sound/dcadec
@@ -223,7 +222,6 @@ src_configure() {
 		$(use_enable dbus) \
 		$(use_enable debug) \
 		$(use_enable gles) \
-		$(use_enable joystick) \
 		$(use_enable midi mid) \
 		$(use_enable mysql) \
 		$(use_enable nfs) \
