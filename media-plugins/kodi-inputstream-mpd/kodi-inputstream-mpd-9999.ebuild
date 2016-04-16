@@ -21,4 +21,5 @@ IUSE=""
 DEPEND="
 	media-tv/kodi
 	media-libs/kodiplatform
+	dev-libs/libp8-platform
 	"
