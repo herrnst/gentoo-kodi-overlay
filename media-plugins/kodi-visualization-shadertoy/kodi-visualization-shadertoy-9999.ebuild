@@ -4,7 +4,7 @@
 
 EAPI=5
 
-EGIT_REPO_URI="https://github.com/topfs2/visualization.shadertoy.git"
+EGIT_REPO_URI="https://github.com/notspiff/visualization.shadertoy.git"
 EGIT_BRANCH="master"
 
 inherit git-r3 cmake-utils kodi-addon
@@ -17,8 +17,6 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
-
-PATCHES=( "${FILESDIR}/${P}-p8platform.patch" )
 
 DEPEND="
 	media-tv/kodi
