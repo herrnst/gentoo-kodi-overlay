@@ -18,8 +18,6 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-PATCHES=( "${FILESDIR}/${P}-buildfix.patch" )
-
 DEPEND="
 	media-tv/kodi
 	media-libs/kodiplatform
