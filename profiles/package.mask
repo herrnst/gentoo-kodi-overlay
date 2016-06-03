@@ -1,8 +1,0 @@
-# https://github.com/herrnst/ (21 Dec 2015)
-# Upstream author ceased further development and addon is inoperable in
-# it's current state with current Kodi versions. See
-# https://github.com/pipelka/vdr-plugin-xvdr/issues/131 for more details.
-#
-# ebuild will be dropped from gentoo-kodi-overlay in Q1/2016
-media-plugins/kodi-pvr-vdr-xvdr
-
