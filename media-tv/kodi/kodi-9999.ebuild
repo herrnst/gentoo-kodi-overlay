@@ -40,8 +40,9 @@ IUSE="airplay alsa avahi bluetooth bluray caps cec dbus debug gles java midi mys
 # gles/vaapi: http://trac.kodi.tv/ticket/10552 #464306
 REQUIRED_USE="
 	|| ( gles opengl )
-	gles? ( !vaapi )
+	gles? ( !vaapi !vdpau )
 	vaapi? ( !gles )
+	vdpau? ( !gles )
 	udisks? ( dbus )
 	upower? ( dbus )
 "
