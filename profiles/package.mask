@@ -1,0 +1,4 @@
+# https://github.com/herrnst/ (21 Dec 2015)
+# Upstream needs to be updated to match Kodi's Inputstream API, although
+# NXMSL isn't used at the moment the addon is inoperable.
+media-plugins/kodi-inputstream-nxmsl
