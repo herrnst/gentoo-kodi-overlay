@@ -10,6 +10,7 @@ MY_PN="platform"
 
 EGIT_REPO_URI="https://github.com/Pulse-Eight/${MY_PN}.git"
 EGIT_BRANCH="master"
+EGIT_SUBMODULES=()
 
 DESCRIPTION="Platform support library used by libCEC and binary add-ons for Kodi."
 HOMEPAGE="https://github.com/Pulse-Eight/platform"
