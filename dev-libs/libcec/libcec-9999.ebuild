@@ -15,6 +15,7 @@ KEYWORDS="~arm ~amd64 ~x86"
 
 EGIT_REPO_URI="https://github.com/Pulse-Eight/libcec.git"
 EGIT_BRANCH="master"
+EGIT_SUBMODULES=()
 
 IUSE="cubox exynos python raspberry-pi +xrandr"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
