@@ -153,7 +153,6 @@ src_unpack() {
 src_prepare() {
 	epatch "${FILESDIR}"/${PN}-9999-no-arm-flags.patch #400617
 	epatch "${FILESDIR}"/${PN}-9999-texturepacker.patch
-	epatch "${FILESDIR}"/${PN}-9999-pr10775-libcec4.patch
 
 	# some dirs ship generated autotools, some dont
 	multijob_init
