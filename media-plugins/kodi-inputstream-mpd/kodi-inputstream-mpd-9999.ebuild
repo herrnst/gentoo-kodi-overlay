@@ -4,7 +4,7 @@
 
 EAPI=5
 
-EGIT_REPO_URI="https://github.com/liberty-developer/inputstream.mpd.git"
+EGIT_REPO_URI="https://github.com/peak3d/inputstream.mpd.git"
 EGIT_BRANCH="master"
 
 inherit git-r3 cmake-utils kodi-addon
