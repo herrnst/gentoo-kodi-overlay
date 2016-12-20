@@ -16,6 +16,11 @@ LIBDVDCSS_COMMIT="2f12236bc1c92f73c21e973363f79eb300de603f"
 LIBDVDREAD_COMMIT="17d99db97e7b8f23077b342369d3c22a6250affd"
 LIBDVDNAV_COMMIT="43b5f81f5fe30bceae3b7cecf2b0ca57fc930dac"
 CODENAME="Krypton"
+
+SRC_URI="https://github.com/xbmc/libdvdcss/archive/${LIBDVDCSS_COMMIT}.tar.gz -> libdvdcss-${LIBDVDCSS_COMMIT}.tar.gz
+         https://github.com/xbmc/libdvdread/archive/${LIBDVDREAD_COMMIT}.tar.gz -> libdvdread-${LIBDVDREAD_COMMIT}.tar.gz
+         https://github.com/xbmc/libdvdnav/archive/${LIBDVDNAV_COMMIT}.tar.gz -> libdvdnav-${LIBDVDNAV_COMMIT}.tar.gz"
+
 case ${PV} in
 9999)
 	EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
@@ -27,11 +32,8 @@ case ${PV} in
 	MY_PV=${MY_PV/_beta/b}
 	MY_PV=${MY_PV/_rc/rc}
 	MY_P="${PN}-${MY_PV}"
-	SRC_URI="https://github.com/xbmc/xbmc/archive/${MY_PV}-${CODENAME}.tar.gz -> ${MY_P}.tar.gz
-		https://github.com/xbmc/libdvdcss/archive/${LIBDVDCSS_COMMIT}.tar.gz -> libdvdcss-${LIBDVDCSS_COMMIT}.tar.gz
-		https://github.com/xbmc/libdvdread/archive/${LIBDVDREAD_COMMIT}.tar.gz -> libdvdread-${LIBDVDREAD_COMMIT}.tar.gz
-		https://github.com/xbmc/libdvdnav/archive/${LIBDVDNAV_COMMIT}.tar.gz -> libdvdnav-${LIBDVDNAV_COMMIT}.tar.gz
-		!java? ( https://github.com/candrews/gentoo-kodi/raw/master/${MY_P}-generated-addons.tar.xz )"
+	SRC_URI+="https://github.com/xbmc/xbmc/archive/${MY_PV}-${CODENAME}.tar.gz -> ${MY_P}.tar.gz
+                  !java? ( https://github.com/candrews/gentoo-kodi/raw/master/${MY_P}-generated-addons.tar.xz )"
 	KEYWORDS="~amd64 ~x86"
 
 	S=${WORKDIR}/xbmc-${MY_PV}-${CODENAME}
@@ -46,7 +48,7 @@ SLOT="0"
 # use flag is called libusb so that it doesn't fool people in thinking that
 # it is _required_ for USB support. Otherwise they'll disable udev and
 # that's going to be worse.
-IUSE="airplay alsa bluetooth bluray caps cec +css dbus debug dvd gles java libusb lirc mysql nonfree nfs +opengl +openssl pulseaudio samba sftp +system-ffmpeg test +udev udisks upnp upower vaapi vdpau webserver +X +xslt zeroconf"
+IUSE="airplay alsa bluetooth bluray caps cec +css dbus debug dvd gles java libusb lirc mysql nfs nonfree +opengl +openssl pulseaudio samba sftp +system-ffmpeg test +udev udisks upnp upower vaapi vdpau webserver +X +xslt zeroconf"
 REQUIRED_USE="
 	|| ( gles opengl )
 	udev? ( !libusb )
@@ -60,18 +62,18 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	bluetooth? ( net-wireless/bluez )
 	bluray? ( >=media-libs/libbluray-0.7.0 )
 	caps? ( sys-libs/libcap )
+	cec? ( >=dev-libs/libcec-4.0 )
 	dbus? ( sys-apps/dbus )
+	dev-db/sqlite
 	dev-libs/expat
 	dev-libs/fribidi
-	dvd? ( dev-libs/libcdio[-minimal] )
-	cec? ( >=dev-libs/libcec-4.0 )
-	dev-db/sqlite
 	dev-libs/libpcre[cxx]
 	dev-libs/libxml2
-	dev-python/pillow[${PYTHON_USEDEP}]
 	>=dev-libs/lzo-2.04
 	dev-libs/tinyxml[stl]
 	>=dev-libs/yajl-2
+	dev-python/pillow[${PYTHON_USEDEP}]
+	dvd? ( dev-libs/libcdio[-minimal] )
 	gles? ( media-libs/mesa[gles2] )
 	libusb? ( virtual/libusb:1 )
 	media-fonts/corefonts
@@ -80,29 +82,30 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	media-libs/fontconfig
 	media-libs/freetype
 	>=media-libs/libass-0.9.7
-	>=media-libs/taglib-1.9
+	>=media-libs/taglib-1.11-r1
 	mysql? ( virtual/mysql )
-	net-misc/curl
+	>=net-misc/curl-7.51.0
 	nfs? ( net-fs/libnfs:= )
 	opengl? (
 		virtual/glu
 		virtual/opengl
 	)
-	openssl? ( dev-libs/openssl:0= )
+	openssl? ( >=dev-libs/openssl-1.0.2j:0= )
 	pulseaudio? ( media-sound/pulseaudio )
 	samba? ( >=net-fs/samba-3.4.6[smbclient(+)] )
 	sftp? ( net-libs/libssh[sftp] )
 	system-ffmpeg? ( >=media-video/ffmpeg-3.1.6:=[encode] )
 	sys-libs/zlib
-	webserver? ( net-libs/libmicrohttpd[messages] )
 	udev? ( virtual/udev )
 	vaapi? ( x11-libs/libva[opengl] )
 	vdpau? (
 		|| ( >=x11-libs/libvdpau-1.1 >=x11-drivers/nvidia-drivers-180.51 )
 		system-ffmpeg? ( media-video/ffmpeg[vdpau] )
 	)
+	webserver? ( net-libs/libmicrohttpd[messages] )
 	X? (
 		x11-libs/libdrm
+		x11-libs/libX11
 		x11-libs/libXrandr
 		x11-libs/libXrender
 	)
@@ -128,7 +131,7 @@ DEPEND="${COMMON_DEPEND}
 	dev-util/gperf
 	java? ( virtual/jre )
 	media-libs/giflib
-	media-libs/libpng:0=
+	>=media-libs/libpng-1.6.26:0=
 	test? ( dev-cpp/gtest )
 	virtual/jpeg:0=
 	virtual/pkgconfig
@@ -137,10 +140,6 @@ DEPEND="${COMMON_DEPEND}
 # Force java for latest git version to avoid having to hand maintain the
 # generated addons package.  #488118
 [[ ${PV} == 9999 ]] && DEPEND+=" virtual/jre"
-
-PATCHES=(
-	"${FILESDIR}"/${PN}-dont-strip-binaries.patch
-)
 
 CONFIG_CHECK="~IP_MULTICAST"
 ERROR_IP_MULTICAST="
@@ -169,10 +168,10 @@ src_prepare() {
 }
 
 src_configure() {
-	local CMAKE_BUILD_TYPE=$(usex debug Debug Release)
+	local CMAKE_BUILD_TYPE=$(usex debug Debug RelWithDebInfo)
 
 	local mycmakeargs=(
-		-Ddocdir=/usr/share/doc/${PF}
+		-Ddocdir="${EPREFIX}/usr/share/doc/${PF}"
 		-DENABLE_ALSA=$(usex alsa)
 		-DENABLE_AIRTUNES=OFF
 		-DENABLE_AVAHI=$(usex zeroconf)
@@ -204,16 +203,19 @@ src_configure() {
 		-DENABLE_VDPAU=$(usex vdpau)
 		-DENABLE_X11=$(usex X)
 		-DENABLE_XSLT=$(usex xslt)
-	)
-
-	use libusb && mycmakeargs+=( -DENABLE_LIBUSB=$(usex libusb) )
-
-	[[ ${PV} != 9999 ]] && mycmakeargs+=(
 		-Dlibdvdread_URL="${DISTDIR}/libdvdread-${LIBDVDREAD_COMMIT}.tar.gz"
 		-Dlibdvdnav_URL="${DISTDIR}/libdvdnav-${LIBDVDNAV_COMMIT}.tar.gz"
 		-Dlibdvdcss_URL="${DISTDIR}/libdvdcss-${LIBDVDCSS_COMMIT}.tar.gz"
 	)
+
+	use libusb && mycmakeargs+=( -DENABLE_LIBUSB=$(usex libusb) )
+
 	cmake-utils_src_configure
+}
+
+src_compile() {
+	default
+	cmake-utils_src_compile all $(usev test)
 }
 
 src_install() {
