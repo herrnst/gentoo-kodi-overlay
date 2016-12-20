@@ -1,0 +1,6 @@
+# https://github.com/herrnst/ (20 Dec 2016)
+# Deprecated and no longer maintained by upstream, please switch to/use
+# kodi-inputstream-adaptive.
+media-plugins/kodi-inputstream-mpd
+media-plugins/kodi-inputstream-smoothstream
+
