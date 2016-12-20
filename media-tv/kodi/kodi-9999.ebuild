@@ -139,9 +139,7 @@ DEPEND="${COMMON_DEPEND}
 [[ ${PV} == 9999 ]] && DEPEND+=" virtual/jre"
 
 PATCHES=(
-	"${FILESDIR}"/${PN}-dont-run-gtk-update-icon-cache.patch
 	"${FILESDIR}"/${PN}-dont-strip-binaries.patch
-	"${FILESDIR}"/${PN}-fix-microhttpd.patch
 )
 
 CONFIG_CHECK="~IP_MULTICAST"
