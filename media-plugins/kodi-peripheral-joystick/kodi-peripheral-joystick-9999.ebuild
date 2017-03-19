@@ -4,7 +4,7 @@
 
 EAPI=5
 
-EGIT_REPO_URI="https://github.com/kodi-game/peripheral.joystick.git"
+EGIT_REPO_URI="https://github.com/xbmc/peripheral.joystick.git"
 EGIT_BRANCH="master"
 
 inherit git-r3 cmake-utils kodi-addon
