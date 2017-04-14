@@ -4,8 +4,8 @@
 
 EAPI=5
 
-EGIT_REPO_URI="https://github.com/peak3d/inputstream.adaptive.git"
-EGIT_BRANCH="master"
+EGIT_REPO_URI="https://github.com/liberty-developer/inputstream.adaptive.git"
+EGIT_BRANCH="agile"
 
 inherit git-r3 cmake-utils kodi-addon
 
