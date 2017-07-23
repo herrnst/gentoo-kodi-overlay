@@ -30,6 +30,7 @@ DEPEND="${RDEPEND}
 	python? (
 		dev-lang/swig
 		${PYTHON_DEPS}
+	sys-libs/ncurses[tinfo]
 	)"
 
 CONFIG_CHECK="~USB_ACM"
