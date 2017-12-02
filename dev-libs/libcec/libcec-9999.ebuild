@@ -2,8 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
-PYTHON_COMPAT=( python2_7 python3_4 )
+EAPI=6
+
+PYTHON_COMPAT=( python{2_7,3_4,3_5} )
 
 inherit cmake-utils eutils git-r3 linux-info python-single-r1
 
