@@ -49,10 +49,10 @@ src_prepare() {
 
 src_configure() {
 	local mycmakeargs=(
-		$(cmake-utils_useno python SKIP_PYTHON_WRAPPER)
-		$(cmake-utils_use_has exynos EXYNOS_API) \
-		$(cmake-utils_use_has cubox TDA955X_API)
-		$(cmake-utils_use_has raspberry-pi RPI_API)
+		-DSKIP_PYTHON_WRAPPER=$(usex !python)
+		-DHAVE_EXYNOS_API=$(usex exynos)
+		-DHAVE_TDA995X_API=$(usex cubox)
+		-DHAVE_RPI_API=$(usex raspberry-pi)
 		-DBUILD_SHARED_LIBS=1
 	)
 	cmake-utils_src_configure
